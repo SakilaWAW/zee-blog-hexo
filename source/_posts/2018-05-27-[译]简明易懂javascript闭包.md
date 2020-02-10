@@ -3,6 +3,8 @@ layout: post
 title:  "[译]简明易懂javascript闭包"
 date:   2018-05-27 18:22:04 +0800
 categories: javascript基础
+tags: javascript
+comments: true
 ---
 
 > 今天带来一篇关于javacript闭包的文章，文章来自stackoverflow的一个高票回答，个人感觉非常不错，兴致来了翻译一下，方便大家和我日后回顾，也顺便锻炼下我的英文水平:)。原文地址[在这](https://stackoverflow.com/questions/111102/how-do-javascript-closures-work)，本文目的只是学习研究，如有不妥当之处，请通过邮件告知我，非常感谢！

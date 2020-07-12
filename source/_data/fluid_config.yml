@@ -39,3 +39,24 @@ navbar:
     - { key: "tag", link: "/tags/", icon: "iconfont icon-tags-fill" }
     #- { key: "about", link: "/about/", icon: "iconfont icon-user-fill" }
     #- { key: 'links', link: '/links/', icon: 'iconfont icon-link-fill' }  # 友链页，把前面#去掉即可展示
+
+#---------------------------
+# 页脚
+# Footer
+#---------------------------
+footer:
+  statistics: # 展示网站的 PV、UV 统计数
+    enable: true
+    source: "busuanzi" # 统计数据来源，可选：busuanzi | leancloud，使用 leancloud 需要在 web_analytics 中设置 api 参数，使用 busuanzi 注意可能间歇抽风
+    pv_format: "总访问量 {} 次" # 显示的文本，{}是数字的占位符（必须包含)，下同
+    uv_format: "总访客数 {} 人"
+
+  beian: # The footer of China's website policy, other areas keep disable
+    enable: false
+    icp_text: 京ICP证123456号 # ICP证号
+    police_text: 京公网安备12345678号 # 公安备案号，不填则只显示ICP
+    police_code: 12345678 # 公安备案的编号，用于URL跳转查询
+    police_icon: /img/police_beian.png # 公安备案的图片. 为空时不显示备案图片
+
+scroll_top_arrow: # 向顶部滚动的箭头
+  enable: true

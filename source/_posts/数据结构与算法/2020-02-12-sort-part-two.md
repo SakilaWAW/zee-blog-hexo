@@ -1,43 +1,35 @@
 ---
 layout: post
-title:  "排序算法[下]"
-date:   2020-02-12 15:27:41 +0800
+title: "排序算法[下]"
+date: 2020-02-12 15:27:41 +0800
 categories: 数据结构与算法
 tags: 算法
-comments: true
 ---
-
-* 1. [归并排序](#)
-* 2. [快速排序](#-1)
-* 3. [堆排序](#-1)
-	* 3.1. [优先队列](#-1)
-	* 3.2. [什么是堆](#-1)
-	* 3.3. [优先队列和堆排序](#-1)
-* 4. [总结](#-1)
 
 上篇文章讲述了几种初级排序算法的思想和实现方法，这篇文章我们深入一些，讲一讲归并、快速和堆这三种排序，直接进入正题。
 
-##  1. <a name=''></a>归并排序
+## 归并排序
 
-顾名思义归并排序的核心操作就是“归并操作”:把两个有序数组合并成一个更大的有序数组。原理是这样的：两个数组A，B并排放好，都从第一个数开始看，假如A的第一个数比较小，就把他拿出来放到新数组的第一个，然后A取第二个数和B比，反之亦然。
+顾名思义归并排序的核心操作就是“归并操作”:把两个有序数组合并成一个更大的有序数组。原理是这样的：两个数组 A，B 并排放好，都从第一个数开始看，假如 A 的第一个数比较小，就把他拿出来放到新数组的第一个，然后 A 取第二个数和 B 比，反之亦然。
 
-我们从A，B都只有一个数据开始归并，慢慢的把所有数据归并成一个大的有序数列。思路理清了，来看代码:
+我们从 A，B 都只有一个数据开始归并，慢慢的把所有数据归并成一个大的有序数列。思路理清了，来看代码:
 
 先看一步归并的代码:
 
 ```javascript
-const tempArr = [];// 写成全局的可以节省空间
+const tempArr = []; // 写成全局的可以节省空间
 
-function merge (arr, lo, mid, hi) {
-  for(let m = lo; m <= hi; ++m) {// arr[lo,...hi]=>tempArr[lo, ...hi]
+function merge(arr, lo, mid, hi) {
+  for (let m = lo; m <= hi; ++m) {
+    // arr[lo,...hi]=>tempArr[lo, ...hi]
     tempArr[m] = arr[m];
   }
   let i = lo;
   let j = mid + 1;
-  for(let n = lo; n <= hi; ++n) {
-    if(i > mid) arr[n] = tempArr[j++];
-    else if(j > hi) arr[n] = tempArr[i++];
-    else if(tempArr[i] <= tempArr[j]) arr[n] = tempArr[i++];
+  for (let n = lo; n <= hi; ++n) {
+    if (i > mid) arr[n] = tempArr[j++];
+    else if (j > hi) arr[n] = tempArr[i++];
+    else if (tempArr[i] <= tempArr[j]) arr[n] = tempArr[i++];
     else arr[n] = tempArr[j++];
   }
 }
@@ -49,10 +41,10 @@ function merge (arr, lo, mid, hi) {
 
 ```javascript
 function mergeSort(arr, start, end) {
-  if(end <= start) return;
-  const mid = start + Math.floor((end - start)/2);
+  if (end <= start) return;
+  const mid = start + Math.floor((end - start) / 2);
   mergeSort(arr, start, mid);
-  mergeSort(arr, mid+1, end);
+  mergeSort(arr, mid + 1, end);
   merge(arr, start, mid, end);
 }
 ```
@@ -63,9 +55,16 @@ function mergeSort(arr, start, end) {
 function iTermergeSort(arr) {
   const N = arr.length;
 
-  for(let size=1; size < N; size*=2) {// 一个子数组长度
-    for(let start= 0; start < N-size; start += size+size) {// [1,2]、[3，4]...
-      merge(arr, start, start+size-1, Math.min(N-1, start+2*size-1));
+  for (let size = 1; size < N; size *= 2) {
+    // 一个子数组长度
+    for (let start = 0; start < N - size; start += size + size) {
+      // [1,2]、[3，4]...
+      merge(
+        arr,
+        start,
+        start + size - 1,
+        Math.min(N - 1, start + 2 * size - 1)
+      );
     }
   }
 }
@@ -77,7 +76,7 @@ function iTermergeSort(arr) {
 
 总体来说归并排序除了空间复杂度不是最优的之外性能已经算很好了，而且最重要的是它用了一种分治法的思想，这种思考方式在别的算法中也经常用到。
 
-##  2. <a name='-1'></a>快速排序
+## 快速排序
 
 终于到了快速排序出场的时候了，快排由于编写简单，性能非常高，常用于各种情境之下，让我们一起来看看这个传奇算法。
 
@@ -85,10 +84,10 @@ function iTermergeSort(arr) {
 
 ```javascript
 function quickSort(arr, lo, hi) {
-  if(hi <= lo) return;
+  if (hi <= lo) return;
   const splitIdx = group(arr, lo, hi);
   quickSort(arr, lo, splitIdx);
-  quickSort(arr, splitIdx+1, hi);
+  quickSort(arr, splitIdx + 1, hi);
 }
 ```
 
@@ -105,14 +104,14 @@ function swap(arr, idx1, idx2) {
 然后是每次分组逻辑：
 
 ```javascript
-function group (arr, lo, hi) {
+function group(arr, lo, hi) {
   let i = lo;
   let j = hi + 1;
-  const splitVal = arr[lo];// 取第一个数当中间数
-  while(true) {
-    while(arr[++i] <= splitVal) if(i=== hi) break;
-    while(arr[++j] >= splitVal) if(j== lo) break;
-    if(i >= j) break;
+  const splitVal = arr[lo]; // 取第一个数当中间数
+  while (true) {
+    while (arr[++i] <= splitVal) if (i === hi) break;
+    while (arr[++j] >= splitVal) if (j == lo) break;
+    if (i >= j) break;
     swap(arr, i, j);
   }
   swap(arr, lo, j);
@@ -122,11 +121,11 @@ function group (arr, lo, hi) {
 
 快速排序的时间复杂度是`O(NlogN)`，空间复杂度是`O(logN)`，不过当数组基本倒序的时候每一次移动指针都要交换，相当于变相的冒泡排序了，这时时间复杂度为`O(N^2)`，所以我们要通过方法防止快排退化成冒泡，我打算有时间再出一篇新文章深入探讨下这个问题。
 
-综合来看，快速排序及其变型性能很不错，可以大量用于各种情境下，jdk封装的排序就是用的DualPivotQuicksort，就是快排的一个变体。
+综合来看，快速排序及其变型性能很不错，可以大量用于各种情境下，jdk 封装的排序就是用的 DualPivotQuicksort，就是快排的一个变体。
 
-##  3. <a name='-1'></a>堆排序
+## 堆排序
 
-###  3.1. <a name='-1'></a>优先队列
+### 优先队列
 
 在了解堆排序之前，我们先想像这么一个业务场景：
 
@@ -134,14 +133,14 @@ function group (arr, lo, hi) {
 
 这个场景在工作中非常常见，我们称之为优先队列，思考下如何设计算法。我们可能会这么做：在插入的时按顺序插入，取出的时候按照选择排序的思想遍历取最大。或者在插入的时候就按大小插入，取出的时候按顺序取，这是插入排序的思想。两种方式的复杂度如下：
 
-| 算法 | 插入复杂度 | 取出复杂度 |
-| ------ | ------ | ------ |
-| 插入排序思想 | O(N)  | O(1) |
-| 选择排序思想 | O(1) | O(N) |
+| 算法         | 插入复杂度 | 取出复杂度 |
+| ------------ | ---------- | ---------- |
+| 插入排序思想 | O(N)       | O(1)       |
+| 选择排序思想 | O(1)       | O(N)       |
 
-这两种方式都可行，但是有一步都是`O(N)`级别的，在N很大的时候效率不高。有人就提出了一种新的思想，运用堆这种数据结构来完成这个过程，以提高效率。
+这两种方式都可行，但是有一步都是`O(N)`级别的，在 N 很大的时候效率不高。有人就提出了一种新的思想，运用堆这种数据结构来完成这个过程，以提高效率。
 
-###  3.2. <a name='-1'></a>什么是堆
+### 什么是堆
 
 堆是一种数据结构，通常情况下我们说的是二叉堆，它满足一下特点：
 
@@ -150,9 +149,9 @@ function group (arr, lo, hi) {
 
 ![大顶堆](/images/大顶堆初始.png)
 
-这就是一个典型的大顶堆，我们在代码中为了节省空间，通常用一个数组来表示它，为了方便计算，我们把下标为0的位置空出来，如果一个节点的下标是m，那么他的父节点就是`m/2`，子节点就是`2k`和`2k+1`，这样就可以很好地模拟堆的各种操作。
+这就是一个典型的大顶堆，我们在代码中为了节省空间，通常用一个数组来表示它，为了方便计算，我们把下标为 0 的位置空出来，如果一个节点的下标是 m，那么他的父节点就是`m/2`，子节点就是`2k`和`2k+1`，这样就可以很好地模拟堆的各种操作。
 
-我们来看看这个时候插入和取出的效率如何。当我们取最大数的时候，我们可以直接取走根节点9，然后将末节点4放到根节点的位置，之后只要调整4到合适的位置就行了，这个调整操作我们可以称之为下沉，交换之后如下图：
+我们来看看这个时候插入和取出的效率如何。当我们取最大数的时候，我们可以直接取走根节点 9，然后将末节点 4 放到根节点的位置，之后只要调整 4 到合适的位置就行了，这个调整操作我们可以称之为下沉，交换之后如下图：
 
 ![大顶堆堆下沉](/images/大顶堆下沉.png)
 
@@ -164,75 +163,78 @@ function group (arr, lo, hi) {
 
 ```javascript
 function sink(arr, i, N) {
-  while(i*2 <= N) {// 非叶节点
-    let j = 2*i;
-    if(j < N && arr[j+1]>arr[j]) j+=1;
-    if(arr[i] > arr[j]) break;// 父节点最大时停止下沉
+  while (i * 2 <= N) {
+    // 非叶节点
+    let j = 2 * i;
+    if (j < N && arr[j + 1] > arr[j]) j += 1;
+    if (arr[i] > arr[j]) break; // 父节点最大时停止下沉
     swap(arr, i, j);
     i = j;
   }
 }
 ```
 
-我们可以算出来下沉一个节点所需的时间复杂度最大为`O(logN)`(沉到底)，当N很大的时候速度快了非常多。
+我们可以算出来下沉一个节点所需的时间复杂度最大为`O(logN)`(沉到底)，当 N 很大的时候速度快了非常多。
 
 再看插入的效率如何，插入时直接把数据放到末尾，然后将节点上浮到合适的位置。与下沉的道理差不多。
 
 ![大顶堆上浮调整](/images/大顶堆上浮调整.png)
 
-比如我们新加入一个数字9，红色路径就是调整路径，原理比较简单，直接看代码：
+比如我们新加入一个数字 9，红色路径就是调整路径，原理比较简单，直接看代码：
 
 ```javascript
 function swim(arr, i) {
-  while(i > 1 && arr[i] > arr[Math.floor(i/2)]) {
-    swap(arr, i, Math.floor(i/2));
-    i = Math.floor(i/2);
+  while (i > 1 && arr[i] > arr[Math.floor(i / 2)]) {
+    swap(arr, i, Math.floor(i / 2));
+    i = Math.floor(i / 2);
   }
 }
 ```
 
-逻辑比下潜还简单，因为子节点之间不用比较，我们掐指一算发现最大时间复杂度还是`O(logN)`，可见在优先队列中，如果N比较大，使用堆的方式构建优势很大。
+逻辑比下潜还简单，因为子节点之间不用比较，我们掐指一算发现最大时间复杂度还是`O(logN)`，可见在优先队列中，如果 N 比较大，使用堆的方式构建优势很大。
 
-###  3.3. <a name='-1'></a>优先队列和堆排序
+### 优先队列和堆排序
 
 说到这我们已经把堆讲明白了，下面我们把它用到排序上，聪明的同学可能已经想到如何写了：
 
 1. 把数组构建成一个堆(我们假设从小到大排，构建大顶堆)。
 2. 取出第一个数与最后一个交换，最大的数就被安排到最后一个了。
 3. 下沉第一个数(最后一个数不参与，因为它已经有序了)。
-4. 重复2，3步骤直到所有数都有序。
+4. 重复 2，3 步骤直到所有数都有序。
 
 代码如下：
 
 ```javascript
 function heapSort(arr) {
   let N = arr.length - 1;
-  for(let i = Math.floor(N/2); i > 0; --i) {// 构建堆
+  for (let i = Math.floor(N / 2); i > 0; --i) {
+    // 构建堆
     sink(arr, i, N);
   }
-  while(N > 1){// 不断弹出第一个
+  while (N > 1) {
+    // 不断弹出第一个
     swap(arr, 1, N--);
     sink(arr, 1, N);
   }
 }
 ```
 
-取所有数的过程复杂度为`O(NlogN)`，构建堆的过程可以从后往前对每个数依次做上浮，这其实也是一种分治的思想(分治思想无处不在)，先将子树变为堆，然后将多个子树放在一起变为新堆，构建堆需要的操作数计算起来比较复杂😓，这里直接给出结论吧，是`O(N)`。所以加起来还是`O(NlogN)`的复杂度。
+取所有数的过程复杂度为`O(NlogN)`，构建堆的过程可以从后往前对每个数依次做上浮，这其实也是一种分治的思想(分治思想无处不在)，先将子树变为堆，然后将多个子树放在一起变为新堆，构建堆需要的操作数计算起来比较复杂 😓，这里直接给出结论吧，是`O(N)`。所以加起来还是`O(NlogN)`的复杂度。
 
 堆排序的的算法写起来非常简单，性能也很高，空间复杂度为`O(1)`，除了不稳定之外没什么明显缺点，简直是宝藏算法。堆的用法很多，不仅仅可以用于排序，而且我写的基础班堆排序也有可以优化的地方，我打算日后和快速排序一起写一篇新文章。
 
-##  4. <a name='-1'></a>总结
+## 总结
 
 其实还有一些排序，比如桶排序，基数排序等，这里先不做研究了，最后的最后给出各个算法的性能分析表吧：
 
-| 算法 | 稳定性 | 是否原地排序 | 时间复杂度 | 空间复杂度 |备注|
-| ------ | ------ | ------ | ------ | ------ | ------ |
-| 冒泡排序 | √ | √ | N^2 | 1 |
-| 选择排序 | × | √ | N^2 | 1 |
-| 插入排序 | √ | √ | N ~ N^2 | 1 | 基本有序时效率高 |
-| 希尔排序 | × | √ | N ~ N^2 | 1 |
-| 快速排序 | × | √ | NlogN | lgN | 三项切分时效率接近线性 |
-| 归并排序 | √ | × | NlogN | N |
-| 堆排序 | × | √ | NlogN | 1 | 取前几个最大的数时用堆的思想|
+| 算法     | 稳定性 | 是否原地排序 | 时间复杂度 | 空间复杂度 | 备注                         |
+| -------- | ------ | ------------ | ---------- | ---------- | ---------------------------- |
+| 冒泡排序 | √      | √            | N^2        | 1          |
+| 选择排序 | ×      | √            | N^2        | 1          |
+| 插入排序 | √      | √            | N ~ N^2    | 1          | 基本有序时效率高             |
+| 希尔排序 | ×      | √            | N ~ N^2    | 1          |
+| 快速排序 | ×      | √            | NlogN      | lgN        | 三项切分时效率接近线性       |
+| 归并排序 | √      | ×            | NlogN      | N          |
+| 堆排序   | ×      | √            | NlogN      | 1          | 取前几个最大的数时用堆的思想 |
 
 That's all.

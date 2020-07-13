@@ -3,6 +3,8 @@ layout: post
 title: "排序算法[下]"
 date: 2020-02-12 15:27:41 +0800
 categories: 数据结构与算法
+banner_img: /images/sort-part-two-banner.jpg
+index_img: /images/sort-part-two-banner.jpg
 tags: 算法
 ---
 

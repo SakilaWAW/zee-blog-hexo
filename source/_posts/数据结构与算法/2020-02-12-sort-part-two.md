@@ -112,7 +112,7 @@ function group(arr, lo, hi) {
   const splitVal = arr[lo]; // 取第一个数当中间数
   while (true) {
     while (arr[++i] <= splitVal) if (i === hi) break;
-    while (arr[++j] >= splitVal) if (j == lo) break;
+    while (arr[--j] >= splitVal) if (j == lo) break;
     if (i >= j) break;
     swap(arr, i, j);
   }

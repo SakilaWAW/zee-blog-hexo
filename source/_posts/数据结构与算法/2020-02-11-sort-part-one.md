@@ -81,7 +81,7 @@ console.log(`排序后结果: ${bubbleSort(mock)}`);
 
 ```javascript
 function selectSort(arr) {
-  let min = 0;
+  let minIdx;
   for (let i = 0; i < arr.length; ++i) {
     minIdx = i;
     for (let j = i + 1; j < arr.length; ++j) {

@@ -24,21 +24,21 @@ index:
 # Archive Page
 #---------------------------
 archive:
-  banner_img: /img/archive-page-banner.png
+  banner_img: /images/archive-page-banner.png
 
 #---------------------------
 # 分类归档页
 # Categories Page
 #---------------------------
 category:
-  banner_img: /img/category-page-banner.png
+  banner_img: /images/category-page-banner.png
 
 #---------------------------
 # 标签归档页
 # Tags Page
 #---------------------------
 tag:
-  banner_img: /img/tag-page-banner.png
+  banner_img: /images/tag-page-banner.png
 
 #---------------------------
 # 页头

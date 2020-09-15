@@ -3,6 +3,8 @@ layout: post
 title: "[译]简明易懂javascript闭包"
 date: 2018-05-27 18:22:04 +0800
 categories: javascript基础
+banner_img: /images/javascript-closure-banner.jpg
+index_img: /images/javascript-closure-banner.jpg
 tags: javascript
 ---
 
